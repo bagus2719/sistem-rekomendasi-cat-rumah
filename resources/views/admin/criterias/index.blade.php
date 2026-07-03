@@ -37,13 +37,13 @@
                             <td>{{ number_format($criteria->bobot, 4) }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('admin.criterias.edit', $criteria->id) }}" class="btn btn-sm btn-warning text-dark text-nowrap d-inline-flex align-items-center gap-1">
+                                    <a href="{{ route('admin.criterias.edit', $criteria->id) }}" class="btn btn-sm btn-warning text-dark text-nowrap d-inline-flex align-items-center gap-1" style="height: 31px; padding: 0.25rem 0.75rem;">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
-                                    <form action="{{ route('admin.criterias.destroy', $criteria->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kriteria ini?')">
+                                    <form action="{{ route('admin.criterias.destroy', $criteria->id) }}" class="m-0" method="POST" onsubmit="return confirm('Yakin ingin menghapus kriteria ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger text-nowrap d-inline-flex align-items-center gap-1">
+                                        <button type="submit" class="btn btn-sm btn-danger text-nowrap d-inline-flex align-items-center gap-1" style="height: 31px; padding: 0.25rem 0.75rem;">
                                             <i class="fas fa-trash"></i> Hapus
                                         </button>
                                     </form>

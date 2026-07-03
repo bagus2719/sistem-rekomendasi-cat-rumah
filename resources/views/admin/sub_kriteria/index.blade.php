@@ -40,13 +40,13 @@
                                     <td><span class="badge bg-secondary">{{ $sub->nilai }}</span></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a href="{{ route('admin.sub-kriteria.edit', $sub->id) }}" class="btn btn-sm btn-warning text-dark text-nowrap d-inline-flex align-items-center gap-1" title="Edit">
+                                            <a href="{{ route('admin.sub-kriteria.edit', $sub->id) }}" class="btn btn-sm btn-warning text-dark text-nowrap d-inline-flex align-items-center gap-1" style="height: 31px; padding: 0.25rem 0.75rem;" title="Edit">
                                                 <i class="bi bi-pencil-square"></i> Edit
                                             </a>
-                                            <form action="{{ route('admin.sub-kriteria.destroy', $sub->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                            <form action="{{ route('admin.sub-kriteria.destroy', $sub->id) }}" class="m-0" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger text-nowrap d-inline-flex align-items-center gap-1" title="Hapus">
+                                                <button type="submit" class="btn btn-sm btn-danger text-nowrap d-inline-flex align-items-center gap-1" style="height: 31px; padding: 0.25rem 0.75rem;" title="Hapus">
                                                     <i class="bi bi-trash"></i> Hapus
                                                 </button>
                                             </form>

@@ -77,13 +77,16 @@ class DatabaseSeeder extends Seeder
             SubKriteria::create($sub);
         }
 
-        // Alternatif Warna
+        // Alternatif Warna (Berdasarkan File Excel)
         $alternatives = [
-            ['nama_warna' => 'Jotun Egg White', 'kode_warna' => '1001', 'deskripsi' => 'Memberi kesan bersih, luas, dan netral.'],
-            ['nama_warna' => 'Jotun Sun', 'kode_warna' => '10428', 'deskripsi' => 'Ceria dan penuh energi, cocok untuk mencerahkan ruangan.'],
-            ['nama_warna' => 'Jotun Green Harmony', 'kode_warna' => '8252', 'deskripsi' => 'Membawa nuansa alam yang menenangkan ke dalam ruangan.'],
-            ['nama_warna' => 'Jotun Sea Emerald', 'kode_warna' => '6084', 'deskripsi' => 'Sangat menenangkan, ideal untuk ruang istirahat.'],
-            ['nama_warna' => 'Jotun Matrix', 'kode_warna' => '9913', 'deskripsi' => 'Modern dan elegan, netral tapi tidak membosankan.'],
+            ['nama_warna' => 'A1 Unbleached', 'kode_warna' => 'A1', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
+            ['nama_warna' => 'A2 Soft Radiance', 'kode_warna' => 'A2', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
+            ['nama_warna' => 'A3 Iconic', 'kode_warna' => 'A3', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
+            ['nama_warna' => 'A4 Soft Dunes', 'kode_warna' => 'A4', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
+            ['nama_warna' => 'A5 Green Tea', 'kode_warna' => 'A5', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
+            ['nama_warna' => 'A6 Northern Mystic', 'kode_warna' => 'A6', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
+            ['nama_warna' => 'A7 Pink Ambience', 'kode_warna' => 'A7', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
+            ['nama_warna' => 'A8 Olive', 'kode_warna' => 'A8', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
         ];
 
         $altModels = [];
@@ -91,26 +94,20 @@ class DatabaseSeeder extends Seeder
             $altModels[] = Alternative::create($alt);
         }
 
-        // Matriks AHP dari CSV (40 Responden via Geometric Mean)
+        // Matriks AHP dari CSV (Responden via Geometric Mean)
         $this->call(DatasetSeeder::class);
 
-        // Nilai Alternatif (Karakteristik Warna 1-5)
-        // C1 (Fungsi Ruangan)
-        // C2 (Luas)
-        // C3 (Pencahayaan)
-        // C4 (Nuansa/Mood)
-        
+        // Nilai Alternatif (Karakteristik Warna 1-5 berdasarkan Excel TOPS)
+        // Array format: [C1, C2, C3, C4]
         $altValues = [
-            // Jotun Egg White
-            1 => [3, 4, 3, 4],
-            // Jotun Sun
-            2 => [3, 3, 3, 3],
-            // Jotun Green Harmony
-            3 => [3, 3, 4, 1],
-            // Jotun Sea Emerald
-            4 => [4, 4, 3, 1],
-            // Jotun Matrix
-            5 => [3, 4, 3, 5],
+            1 => [5, 5, 5, 4], // A1 Unbleached
+            2 => [5, 5, 5, 5], // A2 Soft Radiance
+            3 => [4, 4, 4, 5], // A3 Iconic
+            4 => [5, 4, 4, 5], // A4 Soft Dunes
+            5 => [4, 4, 4, 5], // A5 Green Tea
+            6 => [3, 2, 2, 5], // A6 Northern Mystic
+            7 => [4, 4, 4, 5], // A7 Pink Ambience
+            8 => [4, 3, 3, 5], // A8 Olive
         ];
 
         foreach ($altValues as $altId => $values) {

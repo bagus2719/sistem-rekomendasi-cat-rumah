@@ -39,13 +39,13 @@
                             <td class="align-middle">{{ Str::limit($alternative->deskripsi, 50) }}</td>
                             <td class="align-middle">
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('admin.alternatives.edit', $alternative->id) }}" class="btn btn-sm btn-warning text-dark text-nowrap d-inline-flex align-items-center gap-1">
+                                    <a href="{{ route('admin.alternatives.edit', $alternative->id) }}" class="btn btn-sm btn-warning text-dark text-nowrap d-inline-flex align-items-center gap-1" style="height: 31px; padding: 0.25rem 0.75rem;">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
-                                    <form action="{{ route('admin.alternatives.destroy', $alternative->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus alternatif ini?')">
+                                    <form action="{{ route('admin.alternatives.destroy', $alternative->id) }}" class="m-0" method="POST" onsubmit="return confirm('Yakin ingin menghapus alternatif ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger text-nowrap d-inline-flex align-items-center gap-1">
+                                        <button type="submit" class="btn btn-sm btn-danger text-nowrap d-inline-flex align-items-center gap-1" style="height: 31px; padding: 0.25rem 0.75rem;">
                                             <i class="fas fa-trash"></i> Hapus
                                         </button>
                                     </form>
