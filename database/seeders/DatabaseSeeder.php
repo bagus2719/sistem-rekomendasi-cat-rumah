@@ -56,14 +56,14 @@ class DatabaseSeeder extends Seeder
             ['kriteria_id' => 1, 'nama' => 'Kamar Mandi', 'nilai' => 1],
             
             // C2: Luas Ruangan
-            ['kriteria_id' => 2, 'nama' => 'Sempit', 'nilai' => 1],
-            ['kriteria_id' => 2, 'nama' => 'Sedang', 'nilai' => 3],
-            ['kriteria_id' => 2, 'nama' => 'Luas', 'nilai' => 5],
+            ['kriteria_id' => 2, 'nama' => 'Sempit (< 9 m²)', 'nilai' => 1],
+            ['kriteria_id' => 2, 'nama' => 'Sedang (9 - 16 m²)', 'nilai' => 3],
+            ['kriteria_id' => 2, 'nama' => 'Luas (> 16 m²)', 'nilai' => 5],
             
             // C3: Pencahayaan
-            ['kriteria_id' => 3, 'nama' => 'Rendah', 'nilai' => 1],
-            ['kriteria_id' => 3, 'nama' => 'Sedang', 'nilai' => 3],
-            ['kriteria_id' => 3, 'nama' => 'Tinggi', 'nilai' => 5],
+            ['kriteria_id' => 3, 'nama' => 'Rendah (< 150 lux)', 'nilai' => 1],
+            ['kriteria_id' => 3, 'nama' => 'Sedang (150 - 300 lux)', 'nilai' => 3],
+            ['kriteria_id' => 3, 'nama' => 'Tinggi (> 300 lux)', 'nilai' => 5],
             
             // C4: Nuansa/Mood Pengguna
             ['kriteria_id' => 4, 'nama' => 'Tenang', 'nilai' => 1],
