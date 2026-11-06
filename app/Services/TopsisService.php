@@ -8,10 +8,15 @@ use App\Models\AlternativeValue;
 
 class TopsisService
 {
-    public function calculate($targets)
+    public function calculate($targets, $kategori = null)
     {
         $criterias = Criteria::orderBy('id', 'asc')->get();
-        $alternatives = Alternative::all();
+        
+        $alternativesQuery = Alternative::query();
+        if (!empty($kategori)) {
+            $alternativesQuery->where('kategori', $kategori);
+        }
+        $alternatives = $alternativesQuery->get();
 
         if ($criterias->isEmpty() || $alternatives->isEmpty()) {
             return null;

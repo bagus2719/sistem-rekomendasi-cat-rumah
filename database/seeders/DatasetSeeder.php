@@ -17,20 +17,19 @@ class DatasetSeeder extends Seeder
         $filePath = storage_path('app/ahp_dataset.csv');
         
         if (!file_exists($filePath)) {
-            $this->command->warn('ahp_dataset.csv not found in storage/app/. Skipping DatasetSeeder.');
-            return;
-        }
-
-        $csvData = file_get_contents($filePath);
-        // We will call AhpService
-        try {
-            $ahpService = new \App\Services\AhpService();
-            $result = $ahpService->calculateGeometricMeanFromCsv($csvData);
-            $simulatedInput = $result['matrixInput'];
-            $numRespondents = $result['numRespondents'];
-        } catch (\Exception $e) {
-            $this->command->error($e->getMessage());
-            return;
+            $this->command->warn('ahp_dataset.csv not found in storage/app/. Using default equal weights.');
+            $simulatedInput = []; // Will default to 1 later
+        } else {
+            $csvData = file_get_contents($filePath);
+            try {
+                $ahpService = new \App\Services\AhpService();
+                $result = $ahpService->calculateGeometricMeanFromCsv($csvData);
+                $simulatedInput = $result['matrixInput'];
+                $numRespondents = $result['numRespondents'];
+            } catch (\Exception $e) {
+                $this->command->error($e->getMessage());
+                return;
+            }
         }
 
         $criterias = Criteria::orderBy('id', 'asc')->get();
@@ -61,8 +60,10 @@ class DatasetSeeder extends Seeder
         }
 
         // Jalankan kalkulasi AHP standar untuk menyetel bobot akhir
+        $ahpService = new \App\Services\AhpService();
         $ahpService->calculateWeights();
         
+        $numRespondents = $numRespondents ?? 0;
         $this->command->info("DatasetSeeder: Berhasil menghitung Geometric Mean dari {$numRespondents} responden dan menyimpan bobot akhir melalui AhpService.");
     }
 }

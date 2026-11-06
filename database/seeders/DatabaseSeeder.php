@@ -56,9 +56,9 @@ class DatabaseSeeder extends Seeder
             ['kriteria_id' => 1, 'nama' => 'Kamar Mandi', 'nilai' => 1],
             
             // C2: Luas Ruangan
-            ['kriteria_id' => 2, 'nama' => 'Sempit (< 9 m²)', 'nilai' => 1],
-            ['kriteria_id' => 2, 'nama' => 'Sedang (9 - 16 m²)', 'nilai' => 3],
-            ['kriteria_id' => 2, 'nama' => 'Luas (> 16 m²)', 'nilai' => 5],
+            ['kriteria_id' => 2, 'nama' => 'Sempit (Contoh: < 3x3 m)', 'nilai' => 1],
+            ['kriteria_id' => 2, 'nama' => 'Sedang (Contoh: 3x3 m - 4x4 m)', 'nilai' => 3],
+            ['kriteria_id' => 2, 'nama' => 'Luas (Contoh: > 4x4 m)', 'nilai' => 5],
             
             // C3: Pencahayaan
             ['kriteria_id' => 3, 'nama' => 'Rendah (< 150 lux)', 'nilai' => 1],
@@ -77,47 +77,33 @@ class DatabaseSeeder extends Seeder
             SubKriteria::create($sub);
         }
 
-        // Alternatif Warna (Berdasarkan File Excel)
-        $alternatives = [
-            ['nama_warna' => 'A1 Unbleached', 'kode_warna' => 'A1', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
-            ['nama_warna' => 'A2 Soft Radiance', 'kode_warna' => 'A2', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
-            ['nama_warna' => 'A3 Iconic', 'kode_warna' => 'A3', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
-            ['nama_warna' => 'A4 Soft Dunes', 'kode_warna' => 'A4', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
-            ['nama_warna' => 'A5 Green Tea', 'kode_warna' => 'A5', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
-            ['nama_warna' => 'A6 Northern Mystic', 'kode_warna' => 'A6', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
-            ['nama_warna' => 'A7 Pink Ambience', 'kode_warna' => 'A7', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
-            ['nama_warna' => 'A8 Olive', 'kode_warna' => 'A8', 'deskripsi' => 'Warna cat interior Jotun Majestic.'],
-        ];
+        // Alternatif Warna (150 Jotun Colors dari Excel JSON)
+        $colorsJson = file_get_contents(database_path('seeders/colors_data.json'));
+        $colorsData = json_decode($colorsJson, true);
 
-        $altModels = [];
-        foreach ($alternatives as $alt) {
-            $altModels[] = Alternative::create($alt);
+        foreach ($colorsData as $color) {
+            $altName = $color['name'];
+            $altCode = (string)$color['code'];
+            
+            // local_image structure: "warna\Beige\1129 - Parchment.png"
+            $filename = basename(str_replace('\\', '/', $color['local_image']));
+            
+            $alt = Alternative::create([
+                'nama_warna' => $altName,
+                'kode_warna' => $altCode,
+                'kategori' => $color['kategori'],
+                'deskripsi' => 'Warna cat interior Jotun varian ' . $altName . ' yang memberikan nuansa ' . strtolower($color['kategori']) . '.',
+                'gambar_warna' => 'alternatives/' . $filename
+            ]);
+            
+            // Nilai Kriteria dari JSON
+            AlternativeValue::create(['alternatif_id' => $alt->id, 'kriteria_id' => 1, 'nilai' => $color['C1_FungsiRuangan'] ?? 3]);
+            AlternativeValue::create(['alternatif_id' => $alt->id, 'kriteria_id' => 2, 'nilai' => $color['C2_LuasRuangan'] ?? 3]);
+            AlternativeValue::create(['alternatif_id' => $alt->id, 'kriteria_id' => 3, 'nilai' => $color['C3_Pencahayaan'] ?? 3]);
+            AlternativeValue::create(['alternatif_id' => $alt->id, 'kriteria_id' => 4, 'nilai' => $color['C4_NuansaMood'] ?? 3]);
         }
 
         // Matriks AHP dari CSV (Responden via Geometric Mean)
         $this->call(DatasetSeeder::class);
-
-        // Nilai Alternatif (Karakteristik Warna 1-5 berdasarkan Excel TOPS)
-        // Array format: [C1, C2, C3, C4]
-        $altValues = [
-            1 => [5, 5, 5, 4], // A1 Unbleached
-            2 => [5, 5, 5, 5], // A2 Soft Radiance
-            3 => [4, 4, 4, 5], // A3 Iconic
-            4 => [5, 4, 4, 5], // A4 Soft Dunes
-            5 => [4, 4, 4, 5], // A5 Green Tea
-            6 => [3, 2, 2, 5], // A6 Northern Mystic
-            7 => [4, 4, 4, 5], // A7 Pink Ambience
-            8 => [4, 3, 3, 5], // A8 Olive
-        ];
-
-        foreach ($altValues as $altId => $values) {
-            foreach ($values as $critIndex => $val) {
-                AlternativeValue::create([
-                    'alternatif_id' => $altId,
-                    'kriteria_id' => $critIndex + 1,
-                    'nilai' => $val
-                ]);
-            }
-        }
     }
 }

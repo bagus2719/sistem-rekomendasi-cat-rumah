@@ -48,14 +48,14 @@
             <a href="{{ route('admin.sub-kriteria.index') }}" class="{{ request()->routeIs('admin.sub-kriteria.*') ? 'active' : '' }}">
                 <i class="fas fa-tags me-2"></i> Sub Kriteria
             </a>
+            <a href="{{ route('admin.ahp.index') }}" class="{{ request()->routeIs('admin.ahp.*') ? 'active' : '' }}">
+                <i class="fas fa-calculator me-2"></i> Matriks AHP
+            </a>
             <a href="{{ route('admin.alternatives.index') }}" class="{{ request()->routeIs('admin.alternatives.*') ? 'active' : '' }}">
                 <i class="fas fa-palette me-2"></i> Alternatif Warna
             </a>
             <a href="{{ route('admin.alternative-values.index') }}" class="{{ request()->routeIs('admin.alternative-values.*') ? 'active' : '' }}">
                 <i class="fas fa-star-half-alt me-2"></i> Nilai Alternatif
-            </a>
-            <a href="{{ route('admin.ahp.index') }}" class="{{ request()->routeIs('admin.ahp.*') ? 'active' : '' }}">
-                <i class="fas fa-calculator me-2"></i> Matriks AHP
             </a>
             
             <hr class="text-secondary mt-5">

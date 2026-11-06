@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="row justify-content-center">
@@ -72,6 +72,188 @@
                 </div>
             </div>
         </div>
+        
+        @if(isset($topsis_calculation))
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-header bg-white border-0 pt-4">
+                <h5 class="mb-0">Detail Perhitungan AHP-TOPSIS</h5>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="topsisAccordion">
+                    
+                    <!-- Matriks Keputusan (X) -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                1. Matriks Keputusan (X) - Skor Gap
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#topsisAccordion">
+                            <div class="accordion-body table-responsive p-0">
+                                <table class="table table-bordered table-sm text-center mb-0 m-2">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Alternatif</th>
+                                            @foreach($topsis_calculation['criterias'] as $crit)
+                                                <th>{{ $crit->kode }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($topsis_calculation['ranked'] as $alt)
+                                            <tr>
+                                                <td class="text-start">{{ $alt->nama_warna }}</td>
+                                                @foreach($topsis_calculation['criterias'] as $crit)
+                                                    <td>{{ $topsis_calculation['matrix'][$alt->id][$crit->id] }}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Matriks Ternormalisasi (R) -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                2. Matriks Ternormalisasi (R)
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#topsisAccordion">
+                            <div class="accordion-body table-responsive p-0">
+                                <table class="table table-bordered table-sm text-center mb-0 m-2">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Alternatif</th>
+                                            @foreach($topsis_calculation['criterias'] as $crit)
+                                                <th>{{ $crit->kode }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($topsis_calculation['ranked'] as $alt)
+                                            <tr>
+                                                <td class="text-start">{{ $alt->nama_warna }}</td>
+                                                @foreach($topsis_calculation['criterias'] as $crit)
+                                                    <td>{{ round($topsis_calculation['normalizedMatrix'][$alt->id][$crit->id], 4) }}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Matriks Ternormalisasi Terbobot (Y) -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                3. Matriks Ternormalisasi Terbobot (Y)
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#topsisAccordion">
+                            <div class="accordion-body table-responsive p-0">
+                                <table class="table table-bordered table-sm text-center mb-0 m-2">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Alternatif</th>
+                                            @foreach($topsis_calculation['criterias'] as $crit)
+                                                <th>{{ $crit->kode }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($topsis_calculation['ranked'] as $alt)
+                                            <tr>
+                                                <td class="text-start">{{ $alt->nama_warna }}</td>
+                                                @foreach($topsis_calculation['criterias'] as $crit)
+                                                    <td>{{ round($topsis_calculation['weightedMatrix'][$alt->id][$crit->id], 4) }}</td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Solusi Ideal (A+ & A-) -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                4. Solusi Ideal Positif (A+) & Negatif (A-)
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#topsisAccordion">
+                            <div class="accordion-body table-responsive p-0">
+                                <table class="table table-bordered table-sm text-center mb-0 m-2">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Solusi Ideal</th>
+                                            @foreach($topsis_calculation['criterias'] as $crit)
+                                                <th>{{ $crit->kode }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-start fw-bold text-success">A+ (Positif)</td>
+                                            @foreach($topsis_calculation['criterias'] as $crit)
+                                                <td>{{ round($topsis_calculation['idealPositive'][$crit->id], 4) }}</td>
+                                            @endforeach
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start fw-bold text-danger">A- (Negatif)</td>
+                                            @foreach($topsis_calculation['criterias'] as $crit)
+                                                <td>{{ round($topsis_calculation['idealNegative'][$crit->id], 4) }}</td>
+                                            @endforeach
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jarak dan Preferensi (D+, D-, V) -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
+                                5. Jarak Solusi & Nilai Preferensi (V)
+                            </button>
+                        </h2>
+                        <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#topsisAccordion">
+                            <div class="accordion-body table-responsive p-0">
+                                <table class="table table-bordered table-sm text-center mb-0 m-2">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Alternatif</th>
+                                            <th>Jarak Positif (D+)</th>
+                                            <th>Jarak Negatif (D-)</th>
+                                            <th class="bg-primary text-white">Preferensi (V)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($topsis_calculation['ranked'] as $alt)
+                                            <tr>
+                                                <td class="text-start">{{ $alt->nama_warna }}</td>
+                                                <td>{{ round($topsis_calculation['dPlus'][$alt->id], 4) }}</td>
+                                                <td>{{ round($topsis_calculation['dMinus'][$alt->id], 4) }}</td>
+                                                <td class="fw-bold">{{ round($topsis_calculation['preferences'][$alt->id], 6) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @endif
         
         <div class="text-center mt-4">
             <a href="{{ route('recommendation.form') }}" class="btn btn-secondary">Kembali ke Form</a>
